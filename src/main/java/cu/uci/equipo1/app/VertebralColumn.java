@@ -19,7 +19,7 @@ public class VertebralColumn {
         /**
          *  Creando contexto y session de Apache Spark
          */
-        SparkConf conf = new SparkConf().setAppName("Base de datos cesarea").setMaster("local[*]");
+        SparkConf conf = new SparkConf().setAppName("Base de Columna Vertebral").setMaster("local[*]");
         JavaSparkContext sc = new JavaSparkContext(conf);
 
         sc.setLogLevel("ERROR");
