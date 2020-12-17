@@ -19,7 +19,7 @@ public class VertebralColumn {
         /**
          *  Creando contexto y session de Apache Spark
          */
-        SparkConf conf = new SparkConf().setAppName("Base de datos cesarea").setMaster("local[*]");
+        SparkConf conf = new SparkConf().setAppName("Base de Columna Vertebral").setMaster("local[*]");
         JavaSparkContext sc = new JavaSparkContext(conf);
 
         sc.setLogLevel("ERROR");
@@ -36,8 +36,6 @@ public class VertebralColumn {
         column_2c.printSchema();
         column_2c.show(10);
 
-        Dataset<Row> column_3c = spark.read().option("header", true).option("inferSchema", "true").csv("C:\\Users\\onel.deltoro\\IdeaProjects\\TareaFinal\\spark-course-final\\src\\main\\resources\\csv_result-column_3C_weka.csv");
-        column_3c.printSchema();
-        column_3c.show(10);
+      
     }
 }
