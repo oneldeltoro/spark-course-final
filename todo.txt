@@ -1,7 +1,9 @@
 prueba de del git
 
-1-crear branch next y pub
-2-chekup pu 
-3-subir esqueleto en pub
+https://spark.apache.org/docs/latest/ml-classification-regression.html#random-forest-classifier
 
-cualquier cosa me dices
+
+https://spark.apache.org/docs/latest/ml-classification-regression.html#multilayer-perceptron-classifier
+
+
+https://spark.apache.org/docs/latest/ml-classification-regression.html#logistic-regression
