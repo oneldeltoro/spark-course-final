@@ -108,7 +108,7 @@ public class LrVertebralColumn extends LrCesaria {
     }
 
     public static void main(String[] arg) {
-        String pathCsvFile = "src/main/resources/caesarian.csv";
+        String pathCsvFile = "src/main/resources/csv_result-column_2C_weka.csv";
         LrVertebralColumn logisticRegression
                 = new LrVertebralColumn(pathCsvFile);
 
