@@ -17,79 +17,23 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
 
+import java.util.Optional;
+
 import static org.apache.spark.sql.functions.col;
 
 /**
  * <p> "Escriba su texto aquí"</p>
  * Author: Onel Del Toro Rodríguez <a href="mailto>:onel.deltoro@datys.cu">onel.deltoro@datys.cu</a>
  */
-public class MultilayerPerceptronClassifier {
+public class MultilayerPerceptronClassifier extends AlgorithmsBase{
 
 
     public static void main(String[] args) {
-
-        /**
-         *  Creando contexto y session de Apache Spark
-         */
-        SparkConf conf = new SparkConf().setAppName("Base de Columna Vertebral MultilayerPerceptron").setMaster("local[*]");
-        JavaSparkContext sc = new JavaSparkContext(conf);
-        sc.setLogLevel("ERROR");
-
-        //Para trabajar con Dataframes o Dataset(bd distribuidas)
-        SparkSession spark = SparkSession.builder().sparkContext(sc.sc()).getOrCreate();
-
-        /*
-        Cree un Dataframe a partir del fichero e imprima en pantalla su esquema y las 10 primeras filas.
-         */
-
-        Dataset<Row> column_3c = spark.read().option("header", true).option("inferSchema", "true").csv("C:\\Users\\onel.deltoro\\IdeaProjects\\TareaFinal\\spark-course-final\\src\\main\\resources\\csv_result-column_3C_weka.csv");
-        column_3c.printSchema();
-        column_3c.show(10);
-
-        /*
-         Elimine las filas que tengan columnas con valores ausentes.
-         */
-        System.out.println("Limpiando los datos");
-        Dataset<Row> readCSV = column_3c.select(
-                col("pelvic_incidence"),
-                col("pelvic_tilt"),
-                col("lumbar_lordosis_angle"),
-                col("sacral_slope"),
-                col("pelvic_radius"),
-                col("degree_spondylolisthesis"),
-                col("class"));
-
-        Dataset<Row> clean = readCSV.na().drop();
-
-        clean.createOrReplaceTempView("inciso1b");
-        String query4 = "Select DISTINCT class from inciso1b ";
-        System.out.println(" ejecutando consulta: " + query4);
-        Dataset<Row> inciso4 = spark.sql(query4);
-        inciso4.show();
-
-        /*Aplique las transformaciones necesarias sobre los datos
-        que contengan valores nominales, mediante técnicas de extracción de características. */
-
-        /**
-         * Para este problema se necesita identificar los valores nominales
-         * En mi dataSet las valiebles Nominales son:
-         * @attribute pelvic_incidence
-         * @attribute pelvic_tilt
-         * @attribute lumbar_lordosis_angle
-         * @attribute sacral_slope
-         * @attribute pelvic_radius
-         * @attribute degree_spondylolisthesis
-         *
-         * Estas son las necesarias para su conversion a variables Discretas. Las variables discretas son necesarias para
-         * los datos de entrada.
-         *
-         */
-
+        SparkSession spark = getSparkSession();
+        Dataset<Row> clean = getRowDatasetClean(spark, Optional.empty());
 
         //Dividimos los datos en dos partes 70 % para entrenar y 30 % para pruebas
-        Dataset<Row>[] split = clean.randomSplit(new double[]{0.7, 0.3}, 12345);
-     /*   System.out.println("schema\n\n" + split[0].schema());
-        System.out.println("schema\n\n" + split[0].schema().json());*/
+        Dataset<Row>[] split = getDatasets(clean, Optional.of(new double[]{0.7, 0.3}), Optional.of(12345L));
 
         /**
          * Multilayer Perceptron
@@ -112,10 +56,7 @@ public class MultilayerPerceptronClassifier {
         //Discretizar la salida
         StringIndexer classIndexer = new StringIndexer().setInputCol("class").setOutputCol("label");
 
-        VectorAssembler assembler = new VectorAssembler()
-                .setInputCols(new String[]{"pelvic_incidence", "pelvic_tilt", "lumbar_lordosis_angle"
-                        , "sacral_slope", "pelvic_radius", "degree_spondylolisthesis"})
-                .setOutputCol("features");
+        VectorAssembler assembler = getVectorAssembler();
 
         Normalizer normalizer = new Normalizer()
                 .setInputCol("features")
@@ -135,22 +76,14 @@ public class MultilayerPerceptronClassifier {
 
         //Buscamos hiper-parámetros y ejecutamos el pipeline
 
-        TrainValidationSplit trainValidationSplitMLP = new TrainValidationSplit()
-                .setEstimator(pipelineMLP)
-                .setEstimatorParamMaps(paramGridMLP.build())
-                //Para el evaluador podemos elegir: BinaryClassificationEvaluator, ClusteringEvaluator, MulticlassClassificationEvaluator, RegressionEvaluator
-                .setEvaluator(new MulticlassClassificationEvaluator());
+        TrainValidationSplit trainValidationSplitMLP = getTrainValidationSplit(pipelineMLP, paramGridMLP);
 
         TrainValidationSplitModel modelMLP = trainValidationSplitMLP.fit(split[0]);
         Dataset<Row> resultMLP = modelMLP.transform(split[1]);
 
         resultMLP.show();
         //Analizar métricas de rendimiento Accuracy y Confusion matrix
-        MulticlassMetrics metrics3 = new MulticlassMetrics(resultMLP.select("prediction", "label"));
-        double accuracy = metrics3.weightedFMeasure();
-        System.out.println("Test set accuracy = " +accuracy);
-        System.out.println("Confusion matrix = \n" + metrics3.confusionMatrix());
-        System.out.println("Test Error = " + (1.0 - accuracy));
+        printResult(resultMLP);
 
     }
 }
