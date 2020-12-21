@@ -81,29 +81,23 @@ public class LogisticRegression {
          * los datos de entrada.
          *
          */
-        StringIndexer pelvic_incidenceIndexer = new StringIndexer().setInputCol("pelvic_incidence").setOutputCol("pelvic_incidenceIndex");
-        StringIndexer pelvic_tiltIndexer = new StringIndexer().setInputCol("pelvic_tilt").setOutputCol("pelvic_tiltIndex");
-        StringIndexer lumbar_lordosis_angleIndexer = new StringIndexer().setInputCol("lumbar_lordosis_angle").setOutputCol("lumbar_lordosis_angleIndex");
-        StringIndexer sacral_slopeIndexer = new StringIndexer().setInputCol("sacral_slope").setOutputCol("sacral_slopeIndex");
-        StringIndexer pelvic_radiusIndexer = new StringIndexer().setInputCol("pelvic_radius").setOutputCol("pelvic_radiusIndex");
-        StringIndexer degree_spondylolisthesisIndexer = new StringIndexer().setInputCol("degree_spondylolisthesis").setOutputCol("degree_spondylolisthesisIndex");
+        StringIndexer classIndexer = new StringIndexer().setInputCol("class").setOutputCol("label");
 
         OneHotEncoderEstimator encoder = new OneHotEncoderEstimator()
-                .setInputCols(new String[]{"pelvic_incidenceIndex", "pelvic_tiltIndex",
-                        "lumbar_lordosis_angleIndex", "sacral_slopeIndex", "pelvic_radiusIndex", "degree_spondylolisthesisIndex"})
-                .setOutputCols(new String[]{"pelvic_incidenceVec", "pelvic_tiltVec",
-                        "lumbar_lordosis_angleVec", "sacral_slopeVec","pelvic_radiusVec","degree_spondylolisthesisVec"});
+                .setInputCols(new String[]{"label"})
+                .setOutputCols(new String[]{"labelVec"});
         //Creamos nuestro vector assembler con las columnas deseadas y la clase predictora
         VectorAssembler assembler = new VectorAssembler()
-                .setInputCols(new String[]{"pelvic_incidence","pelvic_tilt","lumbar_lordosis_angle"
-                        ,"sacral_slope","pelvic_radius","degree_spondylolisthesis"})
+                .setInputCols(new String[]{"pelvic_incidence", "pelvic_tilt", "lumbar_lordosis_angle"
+                        , "sacral_slope", "pelvic_radius", "degree_spondylolisthesis"})
                 .setOutputCol("features");
 
         //Dividimos los datos en dos partes 70 % para entrenar y 30 % para pruebas
         //Dividimos los datos en dos partes 70 % para entrenar y 30 % para pruebas
         Dataset<Row>[] split = clean.randomSplit(new double[]{0.7, 0.3}, 12345);
-        split[0].show(10);
-
+       // split[0].show(10);
+        System.out.println("schema\n\n" + split[1].schema());
+        System.out.println("schema\n\n" + split[1].schema().json());
         /**
          2-Seleccione al menos tres algoritmos de aprendizaje automático de acuerdo al problema identificado en el dataset y realice las siguientes acciones:
          * Para el Dataset del ejercicio determino que es un Problema de Clasificacion Multiclase
@@ -119,18 +113,13 @@ public class LogisticRegression {
         org.apache.spark.ml.classification.LogisticRegression lr = new org.apache.spark.ml.classification.LogisticRegression();
         Pipeline pipeline = new Pipeline().setStages(
                 new PipelineStage[]{
-                        pelvic_incidenceIndexer,
-                        pelvic_tiltIndexer,
-                        lumbar_lordosis_angleIndexer,
-                        sacral_slopeIndexer,
-                        pelvic_radiusIndexer,
-                        degree_spondylolisthesisIndexer,
-                        encoder,assembler,
+                        classIndexer,
+                        encoder, assembler,
                         lr});
 
         //Búsqueda de hiperparametros
         ParamGridBuilder paramGrid = new ParamGridBuilder();
-        paramGrid.addGrid(lr.regParam(), new double[]{0.1, 0.01,0.001,0.0001});
+        paramGrid.addGrid(lr.regParam(), new double[]{0.1, 0.01, 0.001, 0.0001});
 
         //Buscamos hiper-parámetros, en este caso buscamos el parámetro regularizador.
         TrainValidationSplit trainValidationSplitLR = new TrainValidationSplit()
@@ -144,13 +133,14 @@ public class LogisticRegression {
 
         //Ejecutamos las pruebas y lo guardamos en un dataset
         Dataset<Row> testResult = model.transform(split[1]);
-
+        testResult.show();
         //Evaluamos metricas de rendimiento a partir de las pruebas
         MulticlassClassificationEvaluator evaluator = new MulticlassClassificationEvaluator()
-                .setLabelCol("class")
+                .setLabelCol("label")
                 .setPredictionCol("prediction")
                 .setMetricName("accuracy");
         double accuracy = evaluator.evaluate(testResult);
+        System.out.println("accuracy is: " + accuracy);
         System.out.println("Test Error = " + (1.0 - accuracy));
     }
 }
