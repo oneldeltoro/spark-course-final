@@ -70,7 +70,7 @@ public class AlgorithmsBase {
         return clean;
     }
 
-    protected static Dataset<Row>[] getDatasets(Dataset<Row> dataset, Optional<double[]> porcent, Optional<Long> seed) {
+    public static Dataset<Row>[] getDatasets(Dataset<Row> dataset, Optional<double[]> porcent, Optional<Long> seed) {
 
         return dataset.randomSplit(porcent.orElseGet(() -> new double[]{0.7, 0.3}), seed.orElseGet(() -> 12345L));
     }

@@ -1,5 +1,6 @@
 package cu.uci.equipo1.app;
 
+import cu.uci.equipo1.app.test.StratifiedTrainTestSplitter;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.ml.Pipeline;
@@ -33,7 +34,7 @@ public class MultilayerPerceptronClassifier extends AlgorithmsBase{
         Dataset<Row> clean = getRowDatasetClean(spark, Optional.empty());
 
         //Dividimos los datos en dos partes 70 % para entrenar y 30 % para pruebas
-        Dataset<Row>[] split = getDatasets(clean, Optional.of(new double[]{0.7, 0.3}), Optional.of(12345L));
+       // Dataset<Row>[] split = getDatasets(clean, Optional.of(new double[]{0.7, 0.3}), Optional.of(12345L));
 
         /**
          * Multilayer Perceptron
@@ -55,6 +56,8 @@ public class MultilayerPerceptronClassifier extends AlgorithmsBase{
 
         //Discretizar la salida
         StringIndexer classIndexer = new StringIndexer().setInputCol("class").setOutputCol("label");
+        StratifiedTrainTestSplitter splitTest = new StratifiedTrainTestSplitter();
+        Dataset<Row>[] split = splitTest.randomSplit(spark,clean,classIndexer.fit(clean).labels(),null);
 
         VectorAssembler assembler = getVectorAssembler();
 

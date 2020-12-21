@@ -1,5 +1,6 @@
 package cu.uci.equipo1.app;
 
+import cu.uci.equipo1.app.test.StratifiedTrainTestSplitter;
 import org.apache.spark.ml.Pipeline;
 import org.apache.spark.ml.PipelineStage;
 import org.apache.spark.ml.classification.RandomForestClassifier;
@@ -28,12 +29,13 @@ public class ClassifierRandomForest extends AlgorithmsBase {
         que contengan valores nominales, mediante técnicas de extracción de características. */
 
         //Dividimos los datos en dos partes 70 % para entrenar y 30 % para pruebas
-        Dataset<Row>[] split = getDatasets(clean, Optional.of(new double[]{0.7, 0.3}), Optional.of(12345L));
+        //Dataset<Row>[] split = getDatasets(clean, Optional.of(new double[]{0.7, 0.3}), Optional.of(12345L));
 
         VectorAssembler assembler = getVectorAssembler();
 
         StringIndexer classIndexer = new StringIndexer().setInputCol("class").setOutputCol("label");
-
+        StratifiedTrainTestSplitter splitTest = new StratifiedTrainTestSplitter();
+        Dataset<Row>[] split = splitTest.randomSplit(spark,clean,classIndexer.fit(clean).labels(),null);
         // Entrena un modelo RandomForest.
         RandomForestClassifier rf = new RandomForestClassifier()
                 .setLabelCol("label")

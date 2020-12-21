@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="13126a64-27e3-447e-8d83-ef2e097821fb" name="Default Changelist" comment="MultilayerPerceptronClassifier funcionando">
-      <change afterPath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/AlgorithmsBase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/AlgorithmsBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/AlgorithmsBase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/ClassifierRandomForest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/ClassifierRandomForest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/LogisticRegression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/LogisticRegression.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/MultilayerPerceptronClassifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/MultilayerPerceptronClassifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/test/StratifiedTrainTestSplitter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/test/StratifiedTrainTestSplitter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +82,7 @@
       <recent name="cu.uci.equipo1.app" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MultilayerPerceptronClassifier">
+  <component name="RunManager" selected="Application.ClassifierRandomForest">
     <configuration name="ClassifierRandomForest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cu.uci.equipo1.app.ClassifierRandomForest" />
       <module name="spark-course-final" />
@@ -123,9 +124,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.ClassifierRandomForest" />
         <item itemvalue="Application.MultilayerPerceptronClassifier" />
         <item itemvalue="Application.LogisticRegression" />
-        <item itemvalue="Application.ClassifierRandomForest" />
       </list>
     </recent_temporary>
   </component>
@@ -187,66 +188,66 @@
       <screen x="0" y="0" width="1360" height="728" />
     </state>
     <state x="0" y="0" key="CommitChangelistDialog2/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608566464358" />
-    <state width="416" height="449" key="DebuggerActiveHint" timestamp="1608560598216">
+    <state width="416" height="449" key="DebuggerActiveHint" timestamp="1608586553936">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
-    <state width="416" height="449" key="DebuggerActiveHint/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608560598216" />
-    <state x="1820" y="90" key="FileChooserDialogImpl" timestamp="1608580426086">
+    <state width="416" height="449" key="DebuggerActiveHint/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608586553936" />
+    <state x="1820" y="90" key="FileChooserDialogImpl" timestamp="1608587050399">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
-    <state x="1820" y="90" key="FileChooserDialogImpl/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608580426085" />
-    <state width="1317" height="178" key="GridCell.Tab.0.bottom" timestamp="1608583852694">
+    <state x="1820" y="90" key="FileChooserDialogImpl/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608587050399" />
+    <state width="1317" height="178" key="GridCell.Tab.0.bottom" timestamp="1608586948432">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
     <state width="1317" height="178" key="GridCell.Tab.0.bottom/0.0.1360.728/1360.0.1360.728@0.0.1360.728" timestamp="1608298738128" />
-    <state width="1317" height="178" key="GridCell.Tab.0.bottom/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608583852694" />
-    <state width="1317" height="178" key="GridCell.Tab.0.center" timestamp="1608583852694">
+    <state width="1317" height="178" key="GridCell.Tab.0.bottom/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608586948432" />
+    <state width="1317" height="178" key="GridCell.Tab.0.center" timestamp="1608586948432">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
     <state width="1317" height="178" key="GridCell.Tab.0.center/0.0.1360.728/1360.0.1360.728@0.0.1360.728" timestamp="1608298738128" />
-    <state width="1317" height="178" key="GridCell.Tab.0.center/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608583852694" />
-    <state width="1317" height="178" key="GridCell.Tab.0.left" timestamp="1608583852694">
+    <state width="1317" height="178" key="GridCell.Tab.0.center/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608586948432" />
+    <state width="1317" height="178" key="GridCell.Tab.0.left" timestamp="1608586948432">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
     <state width="1317" height="178" key="GridCell.Tab.0.left/0.0.1360.728/1360.0.1360.728@0.0.1360.728" timestamp="1608298738128" />
-    <state width="1317" height="178" key="GridCell.Tab.0.left/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608583852694" />
-    <state width="1317" height="178" key="GridCell.Tab.0.right" timestamp="1608583852694">
+    <state width="1317" height="178" key="GridCell.Tab.0.left/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608586948432" />
+    <state width="1317" height="178" key="GridCell.Tab.0.right" timestamp="1608586948432">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
     <state width="1317" height="178" key="GridCell.Tab.0.right/0.0.1360.728/1360.0.1360.728@0.0.1360.728" timestamp="1608298738128" />
-    <state width="1317" height="178" key="GridCell.Tab.0.right/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608583852694" />
-    <state width="1317" height="223" key="GridCell.Tab.1.bottom" timestamp="1608583805666">
+    <state width="1317" height="178" key="GridCell.Tab.0.right/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608586948432" />
+    <state width="1317" height="223" key="GridCell.Tab.1.bottom" timestamp="1608586846111">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
-    <state width="1317" height="223" key="GridCell.Tab.1.bottom/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608583805666" />
-    <state width="1317" height="223" key="GridCell.Tab.1.center" timestamp="1608583805666">
+    <state width="1317" height="223" key="GridCell.Tab.1.bottom/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608586846111" />
+    <state width="1317" height="223" key="GridCell.Tab.1.center" timestamp="1608586846111">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
-    <state width="1317" height="223" key="GridCell.Tab.1.center/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608583805666" />
-    <state width="1317" height="223" key="GridCell.Tab.1.left" timestamp="1608583805666">
+    <state width="1317" height="223" key="GridCell.Tab.1.center/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608586846111" />
+    <state width="1317" height="223" key="GridCell.Tab.1.left" timestamp="1608586846111">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
-    <state width="1317" height="223" key="GridCell.Tab.1.left/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608583805666" />
-    <state width="1317" height="223" key="GridCell.Tab.1.right" timestamp="1608583805666">
+    <state width="1317" height="223" key="GridCell.Tab.1.left/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608586846111" />
+    <state width="1317" height="223" key="GridCell.Tab.1.right" timestamp="1608586846111">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
-    <state width="1317" height="223" key="GridCell.Tab.1.right/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608583805666" />
-    <state width="1317" height="223" key="GridCell.Tab.2.bottom" timestamp="1608583805667">
+    <state width="1317" height="223" key="GridCell.Tab.1.right/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608586846111" />
+    <state width="1317" height="223" key="GridCell.Tab.2.bottom" timestamp="1608586846112">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
-    <state width="1317" height="223" key="GridCell.Tab.2.bottom/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608583805667" />
-    <state width="1317" height="223" key="GridCell.Tab.2.center" timestamp="1608583805667">
+    <state width="1317" height="223" key="GridCell.Tab.2.bottom/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608586846112" />
+    <state width="1317" height="223" key="GridCell.Tab.2.center" timestamp="1608586846111">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
-    <state width="1317" height="223" key="GridCell.Tab.2.center/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608583805667" />
-    <state width="1317" height="223" key="GridCell.Tab.2.left" timestamp="1608583805667">
+    <state width="1317" height="223" key="GridCell.Tab.2.center/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608586846111" />
+    <state width="1317" height="223" key="GridCell.Tab.2.left" timestamp="1608586846111">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
-    <state width="1317" height="223" key="GridCell.Tab.2.left/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608583805667" />
-    <state width="1317" height="223" key="GridCell.Tab.2.right" timestamp="1608583805667">
+    <state width="1317" height="223" key="GridCell.Tab.2.left/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608586846111" />
+    <state width="1317" height="223" key="GridCell.Tab.2.right" timestamp="1608586846111">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
-    <state width="1317" height="223" key="GridCell.Tab.2.right/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608583805667" />
+    <state width="1317" height="223" key="GridCell.Tab.2.right/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608586846111" />
     <state x="-7" y="0" width="694" height="735" key="dock-window-1" timestamp="1608565549884">
       <screen x="0" y="0" width="1360" height="728" />
     </state>
@@ -267,27 +268,6 @@
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
     <state x="1762" y="125" key="extract.method.dialog/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608583041199" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/LogisticRegression.java</url>
-          <line>32</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/LogisticRegression.java</url>
-          <line>49</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/AlgorithmsBase.java</url>
-          <line>47</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="masterDetails">
     <states>
