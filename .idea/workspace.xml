@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="13126a64-27e3-447e-8d83-ef2e097821fb" name="Default Changelist" comment="MultilayerPerceptronClassifier funcionando">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/LogisticRegression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/LogisticRegression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/MultilayerPerceptronClassifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/MultilayerPerceptronClassifier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/RandomForestClassifier.java" beforeDir="false" />
-    </list>
+    <list default="true" id="13126a64-27e3-447e-8d83-ef2e097821fb" name="Default Changelist" comment="MultilayerPerceptronClassifier funcionando" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -123,7 +118,7 @@
       <workItem from="1608232046542" duration="1500000" />
       <workItem from="1608240031070" duration="1857000" />
       <workItem from="1608300821744" duration="8086000" />
-      <workItem from="1608558974776" duration="15548000" />
+      <workItem from="1608558974776" duration="15601000" />
     </task>
     <task id="LOCAL-00001" summary="LogisticRegression funcionando">
       <created>1608566171343</created>
