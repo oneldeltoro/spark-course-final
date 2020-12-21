@@ -32,7 +32,7 @@ public class VertebralColumn {
          */
 
         System.out.println("Cree un Dataframe a partir del fichero e imprima en pantalla su esquema y las 10 primeras filas");
-        Dataset<Row> column_2c = spark.read().option("header", true).option("inferSchema", "true").csv("C:\\Users\\onel.deltoro\\IdeaProjects\\TareaFinal\\spark-course-final\\src\\main\\resources\\csv_result-column_2C_weka.csv");
+        Dataset<Row> column_2c = spark.read().option("header", true).option("inferSchema", "true").csv("src/main/resources/csv_result-column_2C_weka.csv");
         column_2c.printSchema();
         column_2c.show(10);
 

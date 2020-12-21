@@ -24,11 +24,11 @@
             <version>1.18.16</version>
             <scope>provided</scope>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.15-SNAPSHOT</version>
-        </dependency>-->
+            <version>1.15</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core_2.11</artifactId>
@@ -44,6 +44,11 @@
             <artifactId>spark-mllib_2.11</artifactId>
             <version>${spark-version}</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit</groupId>
+            <artifactId>junit4-engine</artifactId>
+            <version>5.0.0-ALPHA</version>
         </dependency>
     </dependencies>
 </project>
