@@ -3,10 +3,12 @@ package cu.uci.equipo1.app;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.ml.Pipeline;
+import org.apache.spark.ml.PipelineModel;
 import org.apache.spark.ml.PipelineStage;
+import org.apache.spark.ml.classification.RandomForestClassificationModel;
+import org.apache.spark.ml.classification.RandomForestClassifier;
 import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator;
-import org.apache.spark.ml.evaluation.RegressionEvaluator;
-import org.apache.spark.ml.feature.OneHotEncoderEstimator;
+import org.apache.spark.ml.feature.IndexToString;
 import org.apache.spark.ml.feature.StringIndexer;
 import org.apache.spark.ml.feature.VectorAssembler;
 import org.apache.spark.ml.tuning.ParamGridBuilder;
@@ -23,7 +25,7 @@ import static org.apache.spark.sql.functions.col;
  * <p> "Escriba su texto aquí"</p>
  * Author: Onel Del Toro Rodríguez <a href="mailto>:onel.deltoro@datys.cu">onel.deltoro@datys.cu</a>
  */
-public class LogisticRegression {
+public class ClassifierRandomForest {
     public static void main(String[] args) {
 
         /**
@@ -68,77 +70,71 @@ public class LogisticRegression {
         /*Aplique las transformaciones necesarias sobre los datos
         que contengan valores nominales, mediante técnicas de extracción de características. */
 
-        /**
-         * Para este problema se necesita identificar los valores nominales
-         * En mi dataSet las valiebles Nominales son:
-         * @attribute pelvic_incidence
-         * @attribute pelvic_tilt
-         * @attribute lumbar_lordosis_angle
-         * @attribute sacral_slope
-         * @attribute pelvic_radius
-         * @attribute degree_spondylolisthesis
-         *
-         * Estas son las necesarias para su conversion a variables Discretas. Las variables discretas son necesarias para
-         * los datos de entrada.
-         *
-         */
-        StringIndexer classIndexer = new StringIndexer().setInputCol("class").setOutputCol("label");
-
-        OneHotEncoderEstimator encoder = new OneHotEncoderEstimator()
-                .setInputCols(new String[]{"label"})
-                .setOutputCols(new String[]{"labelVec"});
-        //Creamos nuestro vector assembler con las columnas deseadas y la clase predictora
-        VectorAssembler assembler = new VectorAssembler()
-                .setInputCols(new String[]{"pelvic_incidence", "pelvic_tilt", "lumbar_lordosis_angle"
-                        , "sacral_slope", "pelvic_radius", "degree_spondylolisthesis"})
-                .setOutputCol("features");
-
-        //Dividimos los datos en dos partes 70 % para entrenar y 30 % para pruebas
-        //Dividimos los datos en dos partes 70 % para entrenar y 30 % para pruebas
-        Dataset<Row>[] split = clean.randomSplit(new double[]{0.7, 0.3}, 12345);
 
         /**
          2-Seleccione al menos tres algoritmos de aprendizaje automático de acuerdo al problema identificado en el dataset y realice las siguientes acciones:
          * Para el Dataset del ejercicio determino que es un Problema de Clasificacion Multiclase
          * para este tipo de Problemas Spark propone o tiene implementado varios algoritmos, pero Yo escojo
          * 1-LogisticRegression
-         * 2-MultilayerPerceptronClassifier
-         * 3-RandomForestClassifier
+         * 2-MulticlassClassificationEvaluator
+         * 3-LinearSVCModel
          */
+        //Dividimos los datos en dos partes 70 % para entrenar y 30 % para pruebas
+        Dataset<Row>[] split = clean.randomSplit(new double[]{0.7, 0.3}, 12345);
+     /*   System.out.println("schema\n\n" + split[0].schema());
+        System.out.println("schema\n\n" + split[0].schema().json());*/
+
+        VectorAssembler assembler = new VectorAssembler()
+                .setInputCols(new String[]{"pelvic_incidence", "pelvic_tilt", "lumbar_lordosis_angle"
+                        , "sacral_slope", "pelvic_radius", "degree_spondylolisthesis"})
+                .setOutputCol("features");
 
 
-        //1-Creamos nuestro modelo de ML LogisticRegression
+        StringIndexer classIndexer = new StringIndexer().setInputCol("class").setOutputCol("label");
 
-        org.apache.spark.ml.classification.LogisticRegression lr = new org.apache.spark.ml.classification.LogisticRegression();
-        Pipeline pipeline = new Pipeline().setStages(
-                new PipelineStage[]{
-                        classIndexer,
-                        encoder, assembler,
-                        lr});
+
+        // Entrena un modelo RandomForest.
+        RandomForestClassifier rf = new RandomForestClassifier()
+                .setLabelCol("label")
+                .setFeaturesCol("features");
+
+// Convert indexed labels back to original labels.
+        IndexToString labelConverter = new IndexToString()
+                .setInputCol("prediction")
+                .setOutputCol("predictedLabel")
+                .setLabels(classIndexer.fit(clean).labels());
+
+// Chain indexers and forest in a Pipeline
+        Pipeline pipeline = new Pipeline()
+                .setStages(new PipelineStage[]{classIndexer,
+                        assembler,
+                        rf,
+                        labelConverter});
 
         //Búsqueda de hiperparametros
         ParamGridBuilder paramGrid = new ParamGridBuilder();
-        paramGrid.addGrid(lr.regParam(), new double[]{0.1, 0.01, 0.001, 0.0001});
+        paramGrid.addGrid(rf.subsamplingRate(), new double[]{0.1, 0.01, 0.001, 0.0001});
+        paramGrid.addGrid(rf.maxDepth(), new int[]{2,4,6,8,10});
 
         //Buscamos hiper-parámetros, en este caso buscamos el parámetro regularizador.
-        TrainValidationSplit trainValidationSplitLR = new TrainValidationSplit()
+        TrainValidationSplit trainValidationSplitRF = new TrainValidationSplit()
                 .setEstimator(pipeline)
                 .setEvaluator(new MulticlassClassificationEvaluator())
-                .setEstimatorParamMaps(paramGrid.build())
-                .setTrainRatio(0.8);
+                .setEstimatorParamMaps(paramGrid.build());
 
         //Ejecutamos el entrenamiento
-        TrainValidationSplitModel model = trainValidationSplitLR.fit(split[0]);
+        TrainValidationSplitModel model = trainValidationSplitRF.fit(split[0]);
 
         //Ejecutamos las pruebas y lo guardamos en un dataset
         Dataset<Row> testResult = model.transform(split[1]);
         testResult.show();
-        //Evaluamos metricas de rendimiento a partir de las pruebas
+
         //Analizar métricas de rendimiento Accuracy y Confusion matrix
         MulticlassMetrics metrics3 = new MulticlassMetrics(testResult.select("prediction", "label"));
         double accuracy = metrics3.weightedFMeasure();
         System.out.println("Test set accuracy = " +accuracy);
         System.out.println("Confusion matrix = \n" + metrics3.confusionMatrix());
         System.out.println("Test Error = " + (1.0 - accuracy));
+
     }
 }

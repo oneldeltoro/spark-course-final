@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="13126a64-27e3-447e-8d83-ef2e097821fb" name="Default Changelist" comment="MultilayerPerceptronClassifier funcionando">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/LogisticRegression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/LogisticRegression.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/MultilayerPerceptronClassifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/MultilayerPerceptronClassifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/RandomForestClassifier.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +54,20 @@
       <recent name="cu.uci.equipo1.app" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MultilayerPerceptronClassifier">
+  <component name="RunManager" selected="Application.ClassifierRandomForest">
+    <configuration name="ClassifierRandomForest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="cu.uci.equipo1.app.ClassifierRandomForest" />
+      <module name="spark-course-final" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cu.uci.equipo1.app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="LogisticRegression" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="cu.uci.equipo1.app.LogisticRegression" />
       <module name="spark-course-final" />
@@ -79,24 +94,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RandomForestClassifier" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="cu.uci.equipo1.app.RandomForestClassifier" />
-      <module name="spark-course-final" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="cu.uci.equipo1.app.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.ClassifierRandomForest" />
         <item itemvalue="Application.MultilayerPerceptronClassifier" />
         <item itemvalue="Application.LogisticRegression" />
-        <item itemvalue="Application.RandomForestClassifier" />
       </list>
     </recent_temporary>
   </component>
@@ -121,7 +123,7 @@
       <workItem from="1608232046542" duration="1500000" />
       <workItem from="1608240031070" duration="1857000" />
       <workItem from="1608300821744" duration="8086000" />
-      <workItem from="1608558974776" duration="7801000" />
+      <workItem from="1608558974776" duration="15548000" />
     </task>
     <task id="LOCAL-00001" summary="LogisticRegression funcionando">
       <created>1608566171343</created>
@@ -158,26 +160,26 @@
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
     <state width="416" height="449" key="DebuggerActiveHint/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608560598216" />
-    <state width="1317" height="178" key="GridCell.Tab.0.bottom" timestamp="1608566464555">
+    <state width="1317" height="178" key="GridCell.Tab.0.bottom" timestamp="1608579524938">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
     <state width="1317" height="178" key="GridCell.Tab.0.bottom/0.0.1360.728/1360.0.1360.728@0.0.1360.728" timestamp="1608298738128" />
-    <state width="1317" height="178" key="GridCell.Tab.0.bottom/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608566464555" />
-    <state width="1317" height="178" key="GridCell.Tab.0.center" timestamp="1608566464555">
+    <state width="1317" height="178" key="GridCell.Tab.0.bottom/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608579524938" />
+    <state width="1317" height="178" key="GridCell.Tab.0.center" timestamp="1608579524938">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
     <state width="1317" height="178" key="GridCell.Tab.0.center/0.0.1360.728/1360.0.1360.728@0.0.1360.728" timestamp="1608298738128" />
-    <state width="1317" height="178" key="GridCell.Tab.0.center/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608566464555" />
-    <state width="1317" height="178" key="GridCell.Tab.0.left" timestamp="1608566464555">
+    <state width="1317" height="178" key="GridCell.Tab.0.center/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608579524938" />
+    <state width="1317" height="178" key="GridCell.Tab.0.left" timestamp="1608579524938">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
     <state width="1317" height="178" key="GridCell.Tab.0.left/0.0.1360.728/1360.0.1360.728@0.0.1360.728" timestamp="1608298738128" />
-    <state width="1317" height="178" key="GridCell.Tab.0.left/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608566464555" />
-    <state width="1317" height="178" key="GridCell.Tab.0.right" timestamp="1608566464555">
+    <state width="1317" height="178" key="GridCell.Tab.0.left/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608579524938" />
+    <state width="1317" height="178" key="GridCell.Tab.0.right" timestamp="1608579524938">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
     <state width="1317" height="178" key="GridCell.Tab.0.right/0.0.1360.728/1360.0.1360.728@0.0.1360.728" timestamp="1608298738128" />
-    <state width="1317" height="178" key="GridCell.Tab.0.right/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608566464555" />
+    <state width="1317" height="178" key="GridCell.Tab.0.right/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608579524938" />
     <state width="1317" height="223" key="GridCell.Tab.1.bottom" timestamp="1608566392185">
       <screen x="1360" y="0" width="1360" height="728" />
     </state>
@@ -214,18 +216,26 @@
       <screen x="0" y="0" width="1360" height="728" />
     </state>
     <state x="-7" y="0" width="694" height="735" key="dock-window-1/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608565549884" />
+    <state x="-7" y="0" width="694" height="735" maximized="true" key="dock-window-2" timestamp="1608579425284">
+      <screen x="0" y="0" width="1360" height="728" />
+    </state>
+    <state x="-7" y="0" width="694" height="735" maximized="true" key="dock-window-2/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608579425284" />
+    <state x="673" y="0" width="694" height="735" key="dock-window-3" timestamp="1608578338672">
+      <screen x="0" y="0" width="1360" height="728" />
+    </state>
+    <state x="673" y="0" width="694" height="735" key="dock-window-3/0.0.1360.728/1360.0.1360.728@1360.0.1360.728" timestamp="1608578338672" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/LogisticRegression.java</url>
-          <line>85</line>
+          <line>86</line>
           <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/cu/uci/equipo1/app/LogisticRegression.java</url>
-          <line>112</line>
+          <line>111</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>

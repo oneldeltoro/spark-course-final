@@ -2,7 +2,16 @@ package cu.uci.equipo1.app;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.ml.Pipeline;
+import org.apache.spark.ml.PipelineStage;
+import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator;
+import org.apache.spark.ml.evaluation.RegressionEvaluator;
+import org.apache.spark.ml.feature.OneHotEncoderEstimator;
 import org.apache.spark.ml.feature.StringIndexer;
+import org.apache.spark.ml.feature.VectorAssembler;
+import org.apache.spark.ml.tuning.ParamGridBuilder;
+import org.apache.spark.ml.tuning.TrainValidationSplit;
+import org.apache.spark.ml.tuning.TrainValidationSplitModel;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
@@ -13,7 +22,7 @@ import static org.apache.spark.sql.functions.col;
  * <p> "Escriba su texto aquí"</p>
  * Author: Onel Del Toro Rodríguez <a href="mailto>:onel.deltoro@datys.cu">onel.deltoro@datys.cu</a>
  */
-public class RandomForestClassifier {
+public class LogisticRegression {
     public static void main(String[] args) {
 
         /**
@@ -72,14 +81,18 @@ public class RandomForestClassifier {
          * los datos de entrada.
          *
          */
-        StringIndexer pelvic_incidenceIndexer = new StringIndexer().setInputCol("pelvic_incidence").setOutputCol("pelvic_incidenceIndex");
-        StringIndexer pelvic_tiltIndexer = new StringIndexer().setInputCol("pelvic_tilt").setOutputCol("pelvic_tiltIndex");
-        StringIndexer lumbar_lordosis_angleIndexer = new StringIndexer().setInputCol("lumbar_lordosis_angle").setOutputCol("lumbar_lordosis_angleIndex");
-        StringIndexer sacral_slopeIndexer = new StringIndexer().setInputCol("sacral_slope").setOutputCol("sacral_slopeIndex");
-        StringIndexer pelvic_radiusIndexer = new StringIndexer().setInputCol("pelvic_radius").setOutputCol("pelvic_radiusIndex");
-        StringIndexer degree_spondylolisthesisIndexer = new StringIndexer().setInputCol("degree_spondylolisthesis").setOutputCol("degree_spondylolisthesisIndex");
+        StringIndexer classIndexer = new StringIndexer().setInputCol("class").setOutputCol("label");
 
+        OneHotEncoderEstimator encoder = new OneHotEncoderEstimator()
+                .setInputCols(new String[]{"label"})
+                .setOutputCols(new String[]{"labelVec"});
+        //Creamos nuestro vector assembler con las columnas deseadas y la clase predictora
+        VectorAssembler assembler = new VectorAssembler()
+                .setInputCols(new String[]{"pelvic_incidence", "pelvic_tilt", "lumbar_lordosis_angle"
+                        , "sacral_slope", "pelvic_radius", "degree_spondylolisthesis"})
+                .setOutputCol("features");
 
+        //Dividimos los datos en dos partes 70 % para entrenar y 30 % para pruebas
         //Dividimos los datos en dos partes 70 % para entrenar y 30 % para pruebas
         Dataset<Row>[] split = clean.randomSplit(new double[]{0.7, 0.3}, 12345);
 
@@ -88,10 +101,44 @@ public class RandomForestClassifier {
          * Para el Dataset del ejercicio determino que es un Problema de Clasificacion Multiclase
          * para este tipo de Problemas Spark propone o tiene implementado varios algoritmos, pero Yo escojo
          * 1-LogisticRegression
-         * 2-MulticlassClassificationEvaluator
+         * 2-MultilayerPerceptronClassifier
          * 3-RandomForestClassifier
          */
 
 
+        //1-Creamos nuestro modelo de ML LogisticRegression
+
+        org.apache.spark.ml.classification.LogisticRegression lr = new org.apache.spark.ml.classification.LogisticRegression();
+        Pipeline pipeline = new Pipeline().setStages(
+                new PipelineStage[]{
+                        classIndexer,
+                        encoder, assembler,
+                        lr});
+
+        //Búsqueda de hiperparametros
+        ParamGridBuilder paramGrid = new ParamGridBuilder();
+        paramGrid.addGrid(lr.regParam(), new double[]{0.1, 0.01, 0.001, 0.0001});
+
+        //Buscamos hiper-parámetros, en este caso buscamos el parámetro regularizador.
+        TrainValidationSplit trainValidationSplitLR = new TrainValidationSplit()
+                .setEstimator(pipeline)
+                .setEvaluator(new MulticlassClassificationEvaluator())
+                .setEstimatorParamMaps(paramGrid.build())
+                .setTrainRatio(0.8);
+
+        //Ejecutamos el entrenamiento
+        TrainValidationSplitModel model = trainValidationSplitLR.fit(split[0]);
+
+        //Ejecutamos las pruebas y lo guardamos en un dataset
+        Dataset<Row> testResult = model.transform(split[1]);
+        testResult.show();
+        //Evaluamos metricas de rendimiento a partir de las pruebas
+        MulticlassClassificationEvaluator evaluator = new MulticlassClassificationEvaluator()
+                .setLabelCol("label")
+                .setPredictionCol("prediction")
+                .setMetricName("accuracy");
+        double accuracy = evaluator.evaluate(testResult);
+        System.out.println("accuracy is: " + accuracy);
+        System.out.println("Test Error = " + (1.0 - accuracy));
     }
 }

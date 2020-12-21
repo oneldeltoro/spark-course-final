@@ -147,10 +147,10 @@ public class MultilayerPerceptronClassifier {
         resultMLP.show();
         //Analizar métricas de rendimiento Accuracy y Confusion matrix
         MulticlassMetrics metrics3 = new MulticlassMetrics(resultMLP.select("prediction", "label"));
-
-        System.out.println("Test set accuracy = " + metrics3.weightedFMeasure());
+        double accuracy = metrics3.weightedFMeasure();
+        System.out.println("Test set accuracy = " +accuracy);
         System.out.println("Confusion matrix = \n" + metrics3.confusionMatrix());
-
+        System.out.println("Test Error = " + (1.0 - accuracy));
 
     }
 }
