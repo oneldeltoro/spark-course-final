@@ -2,7 +2,17 @@ package cu.uci.equipo1.app;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.ml.Pipeline;
+import org.apache.spark.ml.PipelineStage;
+import org.apache.spark.ml.evaluation.BinaryClassificationEvaluator;
+import org.apache.spark.ml.evaluation.MulticlassClassificationEvaluator;
+import org.apache.spark.ml.feature.Normalizer;
 import org.apache.spark.ml.feature.StringIndexer;
+import org.apache.spark.ml.feature.VectorAssembler;
+import org.apache.spark.ml.tuning.ParamGridBuilder;
+import org.apache.spark.ml.tuning.TrainValidationSplit;
+import org.apache.spark.ml.tuning.TrainValidationSplitModel;
+import org.apache.spark.mllib.evaluation.MulticlassMetrics;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.SparkSession;
@@ -21,7 +31,7 @@ public class MultilayerPerceptronClassifier {
         /**
          *  Creando contexto y session de Apache Spark
          */
-        SparkConf conf = new SparkConf().setAppName("Base de Columna Vertebral").setMaster("local[*]");
+        SparkConf conf = new SparkConf().setAppName("Base de Columna Vertebral MultilayerPerceptron").setMaster("local[*]");
         JavaSparkContext sc = new JavaSparkContext(conf);
         sc.setLogLevel("ERROR");
 
@@ -74,25 +84,72 @@ public class MultilayerPerceptronClassifier {
          * los datos de entrada.
          *
          */
-        StringIndexer pelvic_incidenceIndexer = new StringIndexer().setInputCol("pelvic_incidence").setOutputCol("pelvic_incidenceIndex");
-        StringIndexer pelvic_tiltIndexer = new StringIndexer().setInputCol("pelvic_tilt").setOutputCol("pelvic_tiltIndex");
-        StringIndexer lumbar_lordosis_angleIndexer = new StringIndexer().setInputCol("lumbar_lordosis_angle").setOutputCol("lumbar_lordosis_angleIndex");
-        StringIndexer sacral_slopeIndexer = new StringIndexer().setInputCol("sacral_slope").setOutputCol("sacral_slopeIndex");
-        StringIndexer pelvic_radiusIndexer = new StringIndexer().setInputCol("pelvic_radius").setOutputCol("pelvic_radiusIndex");
-        StringIndexer degree_spondylolisthesisIndexer = new StringIndexer().setInputCol("degree_spondylolisthesis").setOutputCol("degree_spondylolisthesisIndex");
 
 
         //Dividimos los datos en dos partes 70 % para entrenar y 30 % para pruebas
         Dataset<Row>[] split = clean.randomSplit(new double[]{0.7, 0.3}, 12345);
+     /*   System.out.println("schema\n\n" + split[0].schema());
+        System.out.println("schema\n\n" + split[0].schema().json());*/
 
         /**
-         2-Seleccione al menos tres algoritmos de aprendizaje automático de acuerdo al problema identificado en el dataset y realice las siguientes acciones:
-         * Para el Dataset del ejercicio determino que es un Problema de Clasificacion Multiclase
-         * para este tipo de Problemas Spark propone o tiene implementado varios algoritmos, pero Yo escojo
-         * 1-LogisticRegression
-         * 2-MulticlassClassificationEvaluator
-         * 3-RandomForestClassifier
+         * Multilayer Perceptron
          */
+
+        //Definimos la arquitectura con 6 neuronas en la capa de entrada (6 atributos)
+        //4 y 3 como neuronas de las capa ocultas y 2 en la salida ya que son dos clasificaciones (efectuar cesarea o no)
+
+
+        int[] layers = new int[]{6,5, 4, 3};
+
+        org.apache.spark.ml.classification.MultilayerPerceptronClassifier redNeuronal = new org.apache.spark.ml.classification.MultilayerPerceptronClassifier()
+                .setLayers(layers)
+                .setBlockSize(128)
+                .setSeed(1234L)
+                .setMaxIter(100);
+        redNeuronal.setFeaturesCol("featuresNormalized");
+        redNeuronal.setLabelCol("label");
+
+        //Discretizar la salida
+        StringIndexer classIndexer = new StringIndexer().setInputCol("class").setOutputCol("label");
+
+        VectorAssembler assembler = new VectorAssembler()
+                .setInputCols(new String[]{"pelvic_incidence", "pelvic_tilt", "lumbar_lordosis_angle"
+                        , "sacral_slope", "pelvic_radius", "degree_spondylolisthesis"})
+                .setOutputCol("features");
+
+        Normalizer normalizer = new Normalizer()
+                .setInputCol("features")
+                .setOutputCol("featuresNormalized")
+                .setP(1.0);
+
+        Pipeline pipelineMLP = new Pipeline().setStages(
+                new PipelineStage[]{
+                        classIndexer,
+                        assembler,
+                        normalizer,
+                        redNeuronal});
+
+        //Configuramos el grid para buscar hiper-parámetros, en este caso de ejemplo máximo número de iteraciones
+        ParamGridBuilder paramGridMLP = new ParamGridBuilder();
+        paramGridMLP.addGrid(redNeuronal.stepSize(), new double[]{0.01, 0.001,0.0015});
+
+        //Buscamos hiper-parámetros y ejecutamos el pipeline
+
+        TrainValidationSplit trainValidationSplitMLP = new TrainValidationSplit()
+                .setEstimator(pipelineMLP)
+                .setEstimatorParamMaps(paramGridMLP.build())
+                //Para el evaluador podemos elegir: BinaryClassificationEvaluator, ClusteringEvaluator, MulticlassClassificationEvaluator, RegressionEvaluator
+                .setEvaluator(new MulticlassClassificationEvaluator());
+
+        TrainValidationSplitModel modelMLP = trainValidationSplitMLP.fit(split[0]);
+        Dataset<Row> resultMLP = modelMLP.transform(split[1]);
+
+        resultMLP.show();
+        //Analizar métricas de rendimiento Accuracy y Confusion matrix
+        MulticlassMetrics metrics3 = new MulticlassMetrics(resultMLP.select("prediction", "label"));
+
+        System.out.println("Test set accuracy = " + metrics3.weightedFMeasure());
+        System.out.println("Confusion matrix = \n" + metrics3.confusionMatrix());
 
 
     }
